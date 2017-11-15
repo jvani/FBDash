@@ -2,6 +2,7 @@ import os
 import folium
 import argparse
 import numpy as np
+import pandas as pd
 import datetime as dt
 from bs4 import BeautifulSoup
 
@@ -78,6 +79,8 @@ class fbdata(object):
         if not os.path.exists(output):
             os.makedirs(output)
 
+        return output
+
 
     def plot_estimated_locations(self, output):
         """Creates a folium map of estimated locations.
@@ -85,8 +88,13 @@ class fbdata(object):
             output (str) - Folder to save outputs.
         """
 
+        df =  pd.DataFrame([[ii[0][0], ii[0][1], ii[1]]for ii in self.coords],
+                             columns=["lat", "lon", "dd"]).set_index("dd")
+        df.to_csv(os.path.join(output, "coords.csv"))
+
         m = folium.Map(
-            location=list(np.array([ii[0] for ii in self.coords]).mean(axis=0)),
+            location=[(df.lat.min() + df.lat.max()) / 2,
+                      (df.lon.min() + df.lon.max()) / 2],
             zoom_start=4,
             tiles="cartodbpositron"
         )
