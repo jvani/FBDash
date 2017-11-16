@@ -10,6 +10,11 @@
 ## Overview
 This project aims to create a dashboard for your Facebook data. The data can be downloaded when logged into Facebook by going to Settings > General and clicking through the _Download a copy_ link.
 
+Create your own map by running the following:
+```
+python fbdash.py --path <path to facebook data> --ouput <path to output files>
+```
+
 ## Requirements
 ```
 folium
